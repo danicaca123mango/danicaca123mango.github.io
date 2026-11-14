@@ -411,11 +411,9 @@
     <main class="registration">
       <h1>Please fill out the form<br>below to register:</h1>
 
-      <form id="registration-form">
-        <p class="notice">
-          Demo only: this form does not send or save your information.
-          Please do not enter real personal information.
-        </p>
+      <form id="registration-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="32d01529-c9d8-425c-af90-137a47de1932">
+        <input type="hidden" name="redirect" value="https://ashlandtutoringclub.me/#thanks">
 
         <label class="field">
           <span>Parent/guardian’s full name</span>
@@ -458,7 +456,7 @@
         </label>
 
         <div class="submit-row">
-          <button class="button" type="submit">Preview next step</button>
+          <button class="button" type="submit">Submit</button>
         </div>
       </form>
     </main>
@@ -618,14 +616,14 @@
       }
     }
 
-    document.getElementById("registration-form")
-      .addEventListener("submit", event => {
-        event.preventDefault();
+    // document.getElementById("registration-form")
+    //  .addEventListener("submit", event => {
+    //    event.preventDefault();
 
         // Demo navigation only. No information is transmitted or stored.
-        event.currentTarget.reset();
-        location.hash = "thanks";
-      });
+      //  event.currentTarget.reset();
+       // location.hash = "thanks";
+     // });
 
     window.addEventListener("hashchange", route);
     route();
