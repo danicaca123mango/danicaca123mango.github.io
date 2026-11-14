@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ashland Tutoring Club</title>
+
+  <style>
+    :root {
+      --cream: #fff9e8;
+      --ink: #594e42;
+      --coral: #ff797d;
+      --border: #ffb5b7;
+      --light-pink: #fff0f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: #171717;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.4;
+    }
+
+    a { color: inherit; }
+    button, input { font: inherit; }
+    button, .button { cursor: pointer; }
+
+    .page { display: none; min-height: 100vh; }
+    .page.active { display: block; }
+
+    .container {
+      width: min(1140px, 90%);
+      margin-inline: auto;
+    }
+
+    header {
+      min-height: 78px;
+      padding: 28px 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 25px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--light-pink);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .button.primary {
+      background: var(--coral);
+      border-color: var(--coral);
+      color: #fff;
+    }
+
+    .button.outline { background: transparent; }
+    .button:disabled { cursor: not-allowed; opacity: .6; }
+
+    a:focus-visible, button:focus-visible, input:focus-visible {
+      outline: 3px solid #276b85;
+      outline-offset: 4px;
+    }
+
+    .hero {
+      padding: 130px 20px 125px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(36px, 5.6vw, 72px);
+      letter-spacing: -2px;
+      line-height: 1.1;
+    }
+
+    .hero p {
+      margin: 12px 0 28px;
+      color: #ff696f;
+      font-size: clamp(20px, 2.5vw, 30px);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .subjects { padding: 12px 0 42px; }
+
+    .section-title {
+      margin: 0 0 40px;
+      color: var(--ink);
+      font-size: 30px;
+      font-weight: 400;
+    }
+
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 35px 70px;
+      padding: 0 30px;
+    }
+
+    .subject:last-child { grid-column: 2; }
+
+    .subject-art {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1.08;
+      font-size: clamp(64px, 10vw, 130px);
+    }
+
+    .english { background: #fff29b; }
+    .math { background: #ff999b; }
+    .science { background: #bff0b7; }
+    .study { background: #c9e4ff; }
+
+    .subject h3 {
+      margin: 12px 0;
+      font-size: 30px;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    .subject p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .about {
+      padding: 42px 0;
+      background: white;
+      scroll-margin-top: 20px;
+    }
+
+    .about .section-title { margin-bottom: 0; }
+
+    .about-copy {
+      max-width: 920px;
+      margin: 0 auto;
+      font-size: 18px;
+    }
+
+    .about-intro { text-align: center; }
+
+    .about ul {
+      padding-left: 22px;
+      margin-bottom: 0;
+    }
+
+    .about li { margin-top: 16px; }
+
+    .contact { padding: 34px 0 65px; }
+    .contact h2 { font-weight: 400; margin-top: 0; }
+    .contact a { overflow-wrap: anywhere; }
+
+    footer {
+      padding: 24px 0 80px;
+      background: #fff;
+      border-top: 1px solid #eee;
+    }
+
+    .registration {
+      max-width: 640px;
+      margin: 85px auto;
+      padding: 0 20px;
+    }
+
+    .registration h1 {
+      margin: 0 16px 36px;
+      color: var(--ink);
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+
+    form {
+      padding: 24px 22px 70px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    .field { display: block; margin-bottom: 20px; }
+    .field span { display: block; margin-bottom: 6px; font-size: 14px; }
+
+    .field input {
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .notice {
+      padding: 12px;
+      background: #fff5d3;
+      border: 1px solid #e4cf87;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .submit-row { margin-top: 50px; text-align: center; }
+
+    .submit-row button {
+      padding: 16px 42px;
+      background: #ff999b;
+      color: var(--ink);
+      font-size: 20px;
+    }
+
+    .thank-you {
+      max-width: 770px;
+      margin: 170px auto;
+      padding: 0 24px;
+      color: var(--ink);
+    }
+
+    .thank-you h1, .thank-you h2 {
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+
+    .thank-you h2 { margin-top: 55px; }
+
+    .donation {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: center;
+      padding: 40px 0 100px;
+    }
+
+    .donation h1 { font-size: 52px; margin: 0 0 24px; }
+    .donation p { font-size: 30px; line-height: 1.3; }
+    .donation-visual { text-align: center; }
+
+    .donation-placeholder {
+      display: grid;
+      place-items: center;
+      min-height: 270px;
+      margin-bottom: 24px;
+      padding: 25px;
+      background: #fff;
+      color: #00a95c;
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: bold;
+    }
+
+    .resources { padding-bottom: 90px; }
+    .resources h1 { max-width: 540px; font-size: 52px; line-height: 1.1; }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 45px;
+      margin-top: 55px;
+    }
+
+    .resource-grid h2 { text-decoration: underline; }
+
+    .resource-link {
+      display: block;
+      margin: 12px 0;
+      color: #395bdf;
+      text-decoration: underline;
+    }
+
+    .resource-link[aria-disabled="true"] {
+      color: #595959;
+      text-decoration-style: dotted;
+    }
+
+    .coming-soon {
+      max-width: 500px;
+      margin: 170px auto 0;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    @media (max-width: 700px) {
+      header { padding-block: 20px; }
+      nav { gap: 8px; }
+      nav .button { padding: 8px 12px; font-size: 12px; }
+      .hero { padding: 75px 12px; }
+      .hero h1 { letter-spacing: -1px; }
+      .subject-grid { grid-template-columns: 1fr 1fr; gap: 30px 20px; padding: 0; }
+      .subject:last-child { grid-column: auto; }
+      .subject h3 { font-size: 24px; }
+      .subject p { font-size: 15px; }
+      .section-title { font-size: 26px; margin-bottom: 24px; }
+      .about-copy { font-size: 16px; }
+      .registration { margin-top: 50px; }
+      .thank-you { margin-top: 90px; }
+      .donation, .resource-grid { grid-template-columns: 1fr; gap: 25px; }
+      .donation h1, .resources h1 { font-size: 38px; }
+      .donation p { font-size: 23px; }
+      .coming-soon { margin-top: 70px; font-size: 25px; }
+    }
+  </style>
+</head>
+
+<body>
+  <section id="home" class="page active">
+    <header class="container">
+      <nav aria-label="Main navigation">
+        <a class="button" href="#donate">Donate</a>
+        <a class="button" href="#home/about">About</a>
+        <a class="button" href="#resources">Resources</a>
+        <a class="button" href="#home/contact">Contact Us</a>
+        <a class="button primary" href="#register">Register</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Ashland Tutoring Club</h1>
+        <p>Free Tutoring for K-8th!</p>
+        <div class="actions">
+          <a class="button outline" href="#home/about">Learn More</a>
+          <a class="button primary" href="#register">Register</a>
+        </div>
+      </section>
+
+      <section class="subjects container">
+        <h2 class="section-title">Subjects Offered:</h2>
+        <div class="subject-grid">
+          <article class="subject">
+            <div class="subject-art english" role="img" aria-label="Globe and books">🌍</div>
+            <h3>English</h3>
+            <p>Grammar, comprehension, vocabulary, and handwriting skills</p>
+          </article>
+
+          <article class="subject">
+            <div class="subject-art math" role="img" aria-label="Calculator">🧮</div>
+            <h3>Math</h3>
+            <p>All math from K-8, whether that’s fractions, multiplication, basic statistics, we got you covered!</p>
+          </article>
+
+          <article class="subject">
+            <div class="subject-art science" role="img" aria-label="Science flask">⚗️</div>
+            <h3>Science</h3>
+            <p>Basic biology, environmental science, and chemistry</p>
+          </article>
+
+          <article class="subject">
+            <div class="subject-art study" role="img" aria-label="File folders">🗂️</div>
+            <h3>Study Skills</h3>
+            <p>Studying effectively and staying on top of assignments</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" class="about">
+        <div class="container">
+          <h2 class="section-title">About</h2>
+          <div class="about-copy">
+            <p class="about-intro">
+              The Ashland Tutoring Club provides free private tutoring lessons
+              to students from grades K-8, run by local high schoolers!
+            </p>
+            <ul>
+              <li>We offer homework help and additional guidance through worksheets and activities</li>
+              <li>School supplies will be provided</li>
+              <li>Lessons are only offered on the weekends</li>
+              <li>Lessons are held at <a href="https://maps.app.goo.gl/8GRL88sLdwaW7J288" target="_blank">Noble Coffee Roasting</a> (281 4th St, Ashland, OR 97520)</li>
+              <li>Lessons are 30 minutes long</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="contact container">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:ashlandtutoringclub@gmail.com">ashlandtutoringclub@gmail.com</a></p>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">Ashland Tutoring Club</div>
+    </footer>
+  </section>
+
+  <section id="register" class="page">
+    <header class="container">
+      <nav aria-label="Registration navigation">
+        <a class="button" href="#home">Home</a>
+      </nav>
+    </header>
+
+    <main class="registration">
+      <h1>Please fill out the form<br>below to register:</h1>
+
+      <form id="registration-form">
+        <p class="notice">
+          Demo only: this form does not send or save your information.
+          Please do not enter real personal information.
+        </p>
+
+        <label class="field">
+          <span>Parent/guardian’s full name</span>
+          <input name="parentName" autocomplete="off" required>
+        </label>
+
+        <label class="field">
+          <span>Parent/guardian’s phone number</span>
+          <input name="parentPhone" type="tel" autocomplete="off" required>
+        </label>
+
+        <label class="field">
+          <span>Parent/guardian’s email</span>
+          <input name="parentEmail" type="email" autocomplete="off" required>
+        </label>
+
+        <label class="field">
+          <span>Child’s name</span>
+          <input name="childName" autocomplete="off" required>
+        </label>
+
+        <label class="field">
+          <span>Child’s grade</span>
+          <input name="childGrade" autocomplete="off" required>
+        </label>
+
+        <label class="field">
+          <span>Any learning challenges to be aware of?</span>
+          <input name="learningChallenges" autocomplete="off">
+        </label>
+
+        <label class="field">
+          <span>Please list all subjects your child needs help with:</span>
+          <input name="subjects" autocomplete="off" required>
+        </label>
+
+        <label class="field">
+          <span>Where did you find out about us?</span>
+          <input name="referral" autocomplete="off">
+        </label>
+
+        <div class="submit-row">
+          <button class="button" type="submit">Preview next step</button>
+        </div>
+      </form>
+    </main>
+  </section>
+
+  <section id="thanks" class="page">
+    <header class="container">
+      <nav aria-label="Booking navigation">
+        <a class="button" href="#home">Home</a>
+      </nav>
+    </header>
+
+    <main class="thank-you">
+      <h1>Thanks for your submission!</h1>
+      <h2>Use the link below to book your first session:</h2>
+      <a id="booking-link" class="button">Google Calendar Booking</a>
+      <p id="booking-note">Booking link has not been configured yet.</p>
+    </main>
+  </section>
+
+  <section id="donate" class="page">
+    <header class="container">
+      <nav aria-label="Donation navigation">
+        <a class="button" href="#home">Home</a>
+        <a class="button" href="#resources">Resources</a>
+        <a class="button primary" href="#register">Register</a>
+      </nav>
+    </header>
+
+    <main class="donation container">
+      <div>
+        <h1>Donate</h1>
+        <p>Any donations are very appreciated!</p>
+        <p>Your donations help us buy essential school supplies, games, books, activities, and fidgets/prizes.</p>
+      </div>
+      <div class="donation-visual">
+        <div class="donation-placeholder">gofundme</div>
+        <a id="donation-link" class="button">Link to GoFundMe</a>
+        <p id="donation-note">Donation link has not been configured yet.</p>
+      </div>
+    </main>
+  </section>
+
+  <section id="resources" class="page">
+    <header class="container">
+      <nav aria-label="Resources navigation">
+        <a class="button" href="#home">Home</a>
+        <a class="button" href="#donate">Donate</a>
+        <a class="button primary" href="#register">Register</a>
+      </nav>
+    </header>
+
+    <main class="resources container">
+      <h1>Worksheets, Games<br>and Guides</h1>
+
+      <div class="resource-grid">
+        <section>
+          <h2>Math</h2>
+          <a class="resource-link" data-resource="fractions">Fractions Guide and Practice</a>
+          <a class="resource-link" data-resource="mathWorksheets">Hub of Free Math Worksheets</a>
+          <a class="resource-link" data-resource="prodigy">Prodigy Online Math Game</a>
+          <a class="resource-link" data-resource="pbs">PBS Kids Math Games (ages 2-8)</a>
+        </section>
+
+        <section>
+          <h2>Writing</h2>
+          <a class="resource-link" data-resource="writingWorksheets">Hub of Free Writing/Reading Worksheets</a>
+          <a class="resource-link" data-resource="frankenstories">Frankenstories Online Writing Game</a>
+        </section>
+
+        <section>
+          <h2>Science</h2>
+          <a class="resource-link" data-resource="scienceWorksheets">Hub of Free Science Worksheets</a>
+        </section>
+      </div>
+
+      <p class="coming-soon">
+        We are currently working on creating more resources!
+      </p>
+    </main>
+  </section>
+
+  <script>
+    // Add your real public URLs here.
+    const LINKS = {
+      booking: "https://calendar.app.google/QuWTLv1qE9VhnQfSA",
+      donation: "https://www.gofundme.com/f/books-and-supplies-for-ashland-tutoring-club",
+      fractions: "https://drive.google.com/file/d/180CQTpV8jAEa96D-U810xvfgBqoLeCPf/view?usp=sharing",
+      mathWorksheets: "https://www.k5learning.com/free-math-worksheets",
+      prodigy: "https://www.prodigygame.com/main-en/prodigy-math",
+      pbs: "https://pbskids.org/games/math",
+      writingWorksheets: "https://www.k5learning.com/free-grammar-worksheets",
+      frankenstories: "https://frankenstories.writelike.org/",
+      scienceWorksheets: "https://www.k5learning.com/science-worksheets"
+    };
+
+    function configureLink(element, url) {
+      if (!url) {
+        element.setAttribute("aria-disabled", "true");
+        element.title = "Link not configured";
+        return;
+      }
+
+      try {
+        const parsed = new URL(url);
+
+        if (parsed.protocol !== "https:") return;
+
+        element.href = parsed.href;
+        element.target = "_blank";
+        element.rel = "noopener noreferrer";
+      } catch {
+        element.title = "Please configure a valid HTTPS URL";
+      }
+    }
+
+    configureLink(document.getElementById("booking-link"), LINKS.booking);
+    configureLink(document.getElementById("donation-link"), LINKS.donation);
+
+    if (document.getElementById("booking-link").hasAttribute("href")) {
+      document.getElementById("booking-note").hidden = true;
+    }
+
+    if (document.getElementById("donation-link").hasAttribute("href")) {
+      document.getElementById("donation-note").hidden = true;
+    }
+
+    document.querySelectorAll("[data-resource]").forEach(link => {
+      configureLink(link, LINKS[link.dataset.resource]);
+    });
+
+    const titles = {
+      home: "Ashland Tutoring Club",
+      register: "Register | Ashland Tutoring Club",
+      thanks: "Booking | Ashland Tutoring Club",
+      donate: "Donate | Ashland Tutoring Club",
+      resources: "Resources | Ashland Tutoring Club"
+    };
+
+    function route() {
+      const [requestedPage, section] =
+        location.hash.slice(1).split("/");
+
+      const pageId = Object.hasOwn(titles, requestedPage)
+        ? requestedPage
+        : "home";
+
+      document.querySelectorAll(".page").forEach(page => {
+        page.classList.toggle("active", page.id === pageId);
+      });
+
+      document.title = titles[pageId];
+      window.scrollTo(0, 0);
+
+      if (pageId === "home" && ["about", "contact"].includes(section)) {
+        document.getElementById(section).scrollIntoView();
+      }
+    }
+
+    document.getElementById("registration-form")
+      .addEventListener("submit", event => {
+        event.preventDefault();
+
+        // Demo navigation only. No information is transmitted or stored.
+        event.currentTarget.reset();
+        location.hash = "thanks";
+      });
+
+    window.addEventListener("hashchange", route);
+    route();
+  </script>
+</body>
+</html>
